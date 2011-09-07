@@ -1,0 +1,65 @@
+#!/usr/bin/php -q
+<?php
+
+require 'conf.php';
+require 'language.php';
+require 'Process.php';
+require 'processes/SKUImages.php';
+require 'processes/GetOrderList.php';
+require 'processes/SubmitOrderShipmentList.php';
+require 'processes/SubmitComparison.php';
+require 'processes/SubmitComparisonPrice.php';
+
+set_time_limit(0);
+ob_implicit_flush();
+ini_set('memory_limit', '2400M');
+
+define('WORKING_DIR', dirname(__FILE__) . '/');
+
+function translate($key){
+    global $argv;
+    
+    $keys = array_keys($_ENV['LANG']);
+    $lang = empty($argv[2])? $_ENV['LANG'][$keys[0]] : $_ENV['LANG'][$argv[2]];
+    return empty($lang[$key])? "" : $lang[$key];
+}
+
+function usage(){
+    $lang_keys = array_keys($_ENV['LANG']);
+    die("
+Usage: run <command> [language]
+Available commands:
+
+    sku             - Download new SKU images from SuperD upload to ChannelAdvisor
+    getorderlist    - Get From Channel Advisor all sales send to SuperD
+    submitshipment  - Get from SuperD the full and partial list - send to ChannelAdvisor
+    comparison		- Get ChannelAdvisor inventory compare it to SuperD
+    price           - Get ChannelAdvisor inventory comparison for new pricing
+    help            - This screen.
+
+Available languages: '".implode("', '", $lang_keys)."'. Default: '".$lang_keys[0]."'.
+
+");
+}
+
+if(!array_key_exists(1, $argv)) usage();
+switch($argv[1]){
+    case 'sku':
+    	$process = new SKUImages; break;
+    case 'getorderlist':
+    	$process = new GetOrderList; break;
+    case 'submitshipment':
+    	$process = new SubmitOrderShipmentList; break;
+    case 'comparison':
+    	$process = new SubmitComparison; break;
+    case 'price':
+        $process = new SubmitComparisonPrice; break;
+    case 'test':
+    	$process = new test; break;
+    case 'help':
+    default: usage();
+}
+
+$process->run();
+
+?>
