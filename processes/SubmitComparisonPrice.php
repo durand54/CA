@@ -558,7 +558,7 @@ class SubmitComparisonPrice implements Process {
         		$this->_sCost = $this->_format_item_shipping_cost();
         		
                 /**
-                *ebay pricing changed to white crow media 01082011
+                *ebay pricing changed to company 01082011
                 *
                 $this->_sAmount = number_format((1.00 * 1.1 - (2.99 - $this->_sCost - $this->_vCost - 0.05 - 0.30 - (0.029 * 2.99))) / ((1 - 0.15 * .80) - 0.029), 2);
                 */
