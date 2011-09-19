@@ -4,82 +4,82 @@
  */
 class GetOrderList implements Process {
 		
-		private $__acountID;
-		private $__account;
-		private $__ftp;
-		private $__developerKey;
-		private $__pass;
-		private $__client;
-		private $__file;
-		private $__file2;
-		private $__accountLine;
-		private $__headerLine;
-		private $__result;
-		private $__PO;
-		private $__headers;
-		private $__testTotal;
-		private $__orderNum;
-		private $__matches;
-		private $__detailMIDs;
-		private $__detailIDs;
-		private $__DLine;
-		private $__po;
-		private $__clientOrderIndentifier;
-		private $__pageSize;
-		private $__string;
-		private $__c;
-		private $__testCount;
-		private $__stringArray;
+		private $_acountID;
+		private $_account;
+		private $_ftp;
+		private $_developerKey;
+		private $_pass;
+		private $_client;
+		private $_file;
+		private $_file2;
+		private $_accountLine;
+		private $_headerLine;
+		private $_result;
+		private $_PO;
+		private $_headers;
+		private $_testTotal;
+		private $_orderNum;
+		private $_matches;
+		private $_detailMIDs;
+		private $_detailIDs;
+		private $_DLine;
+		private $_po;
+		private $_clientOrderIndentifier;
+		private $_pageSize;
+		private $_string;
+		private $_c;
+		private $_testCount;
+		private $_stringArray;
 		
 		
 		//writeFile
-		private $__data;
-		private $__writeFile;
-		private $__dir;
-		private $__log;
-		private $__timeStamp;
+		private $_data;
+		private $_writeFile;
+		private $_dir;
+		private $_log;
+		private $_timeStamp;
 		
 		//time
-		private $__entrydate;
-		private $__entryDateSuperD;
-		private $__trackingdate;
-		private $__modTime;
-		private $__titleTime;
+		private $_entrydate;
+		private $_entryDateSuperD;
+		private $_trackingdate;
+		private $_modTime;
+		private $_titleTime;
 		
 		//data tables and arrays
-		private $__userTable = 'ca_user';
-		private $__purchaseTable = 'ca_productPurchase';
-		private $__userArray;
-		private $__purchaseArray;
+		private $_userTable = 'ca_user';
+		private $_purchaseTable = 'ca_productPurchase';
+		private $_userArray;
+		private $_purchaseArray;
 		
 		
 		
-				public function __construct(){
+				public function _construct(){
         			$this->options = $_ENV['CONFIG'];
         			$this->db = new Database($this->options['db']);
-					$this->__ftp = new Ftp;
-        			$this->__developerKey = $this->options['getOrderList']['developerKey'];
-        			$this->__pass = $this->options['getOrderList']['pass'];
-        			$this->__client = $this->options['getOrderList']['client'];
-        			$this->__entrydate = $this->options['getOrderList']['entrydate'];
-        			$this->__entryDateSuperD = $this->options['getOrderList']['entryDateSuperD'];
-        			$this->__trackingdate = $this->options['getOrderList']['trackingdate'];
-        			$this->__modTime = $this->options['getOrderList']['modTime'];
-        			$this->__titleTime = $this->options['getOrderList']['titleTime'];
-        			$this->__writeFile = $this->options['getOrderList']['writeFile'];
-        			$this->__log = $this->options['getOrderList']['log'];
-        			$this->__po = array();
-					$this->__c = 0;
-					$this->__testCount = 20;
-					$this->__stringArray = 0;
+					$this->_ftp = new Ftp;
+        			$this->_developerKey = $this->options['getOrderList']['developerKey'];
+        			$this->_pass = $this->options['getOrderList']['pass'];
+        			$this->_client = $this->options['getOrderList']['client'];
+        			$this->_entrydate = $this->options['getOrderList']['entrydate'];
+        			$this->_entryDateSuperD = $this->options['getOrderList']['entryDateSuperD'];
+        			$this->_trackingdate = $this->options['getOrderList']['trackingdate'];
+        			$this->_modTime = $this->options['getOrderList']['modTime'];
+        			$this->_titleTime = $this->options['getOrderList']['titleTime'];
+        			$this->_writeFile = $this->options['getOrderList']['writeFile'];
+        			$this->_log = $this->options['getOrderList']['log'];
+        			$this->_po = array();
+					$this->_c = 0;
+					$this->_testCount = 20;
+					$this->_stringArray = 0;
 //LOG IN					
 					
-					$this->__dir = "processes/";//directory needed
-					$this->__log = $this->__dir.$this->options['log'];
-					$Handle = fopen($this->__log, 'a+');
-					$this->__timeStamp = date("Y-m-d H:i:s");
-					$this->__data = $this->__timeStamp.": GetOrderList started.\n";
-					fwrite($Handle, $this->__data); 
+					$this->_dir = "processes/";//directory needed
+					$this->_log = $this->_dir.$this->options['log'];
+					$Handle = fopen($this->_log, 'a+');
+					$this->_timeStamp = date("Y-m-d H:i:s");
+					$this->_data = $this->_timeStamp.": GetOrderList started.\n";
+					fwrite($Handle, $this->_data); 
 					fclose($Handle);			
 					
         		}
@@ -88,22 +88,22 @@ class GetOrderList implements Process {
 					$track_list = $this->db->save($item,$table,$index);
 				}
 				
-			private function __callSoap(){
+			private function _callSoap(){
 				for($a=0;$a<4;$a++){
 					echo $a."\n";
-					$this->__accountID = $this->options['accountKeys'][$a];
-					$this->__account = $a;
-					echo $this->__accountID."\n";
+					$this->_accountID = $this->options['accountKeys'][$a];
+					$this->_account = $a;
+					echo $this->_accountID."\n";
 					
-					$this->__headers = '
+					$this->_headers = '
 <APICredentials xmlns="http://api.channeladvisor.com/webservices/">
-	<DeveloperKey>'.$this->__developerKey.'</DeveloperKey>
-	<Password>'.$this->__pass.'</Password>
+	<DeveloperKey>'.$this->_developerKey.'</DeveloperKey>
+	<Password>'.$this->_pass.'</Password>
 </APICredentials>';
 					
 					$newpacket = '
 <web:GetOrderList>
-	<web:accountID>'.$this->__accountID.'</web:accountID>
+	<web:accountID>'.$this->_accountID.'</web:accountID>
 <web:orderCriteria>
 	<ord:StatusUpdateFilterBeginTimeGMT>2011-01-28T01:11:43</ord:StatusUpdateFilterBeginTimeGMT>
 	<ord:DetailLevel>Medium</ord:DetailLevel>
@@ -114,49 +114,49 @@ class GetOrderList implements Process {
 </web:orderCriteria>
 </web:GetOrderList>';
 					
-					$this->__result = $this->__client->call('GetOrderList',$newpacket,false,false,$this->__headers);
-					if($this->__client->fault){
+					$this->_result = $this->_client->call('GetOrderList',$newpacket,false,false,$this->_headers);
+					if($this->_client->fault){
 						echo 'Fault<pre>';
-						print_r($this->__result);
+						print_r($this->_result);
 						echo '</pre>';
 						} else {
-							$err = $this->__client->getError();
+							$err = $this->_client->getError();
 	
 								if($err){
 									echo 'Error: '.$err;
 								  } else {
 	
 										echo 'Result<pre>';
-										print_r($this->__result);
+										print_r($this->_result);
 										echo '</pre>';
 								  }
 						}
 
 					//
-					$this->__testTotal = $this->__result['GetOrderListResult']['ResultData'];
-					$this->__testTotal = number_format($this->__testTotal);
+					$this->_testTotal = $this->_result['GetOrderListResult']['ResultData'];
+					$this->_testTotal = number_format($this->_testTotal);
 					
-					if($this->__testTotal>0){
-							$this->__orderNum = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['NumberOfMatches'];
-							$this->__matches = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['NumberOfMatches'];
-							$this->__matches = number_format($this->__matches);
+					if($this->_testTotal>0){
+							$this->_orderNum = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['NumberOfMatches'];
+							$this->_matches = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['NumberOfMatches'];
+							$this->_matches = number_format($this->_matches);
 							
-					if($this->__matches != 1){ 
-						$this->__detailMIDs = array();
+					if($this->_matches != 1){ 
+						$this->_detailMIDs = array();
 						}
 					
-					$this->__clientOrderIdentifier = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
-					$this->__file = $this->__clientOrderIdentifier.'_'.$this->__trackingdate.'_'.$this->__titleTime.'.txt';
-					echo 'THIS IS THIS FILE: '.$this->__file;
-					$this->__accountLine = 'A|ORDERS|2010B|'.$this->__entryDateSuperD.'|MUSICINFERNO|13620||';
-					$this->__headerLine =   'H|'.$this->__entryDateSuperD.'|B|'.$this->__clientOrderIdentifier.'|||Music Inferno|5344 E. Greenmeadow Rd.||Long Beach|CA|90808|USA|Music Inferno|5344 E. Greenmeadow Rd.||Long Beach|CA|90808|USA|Will Call|2.99|david.delucca@gmail.com|';
-					$this->__data = $this->__accountLine."\r".$this->__headerLine."\r";
-					$this->__file2 = $this->__clientOrderIdentifier.'_'.$this->__trackingdate.'_'.$this->__titleTime.'.txt.done';		
-					$this->__writeFile1();
-					$this->__writeFile2();
+					$this->_clientOrderIdentifier = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
+					$this->_file = $this->_clientOrderIdentifier.'_'.$this->_trackingdate.'_'.$this->_titleTime.'.txt';
+					echo 'THIS IS THIS FILE: '.$this->_file;
+					$this->_accountLine = 'A|ORDERS|2010B|'.$this->_entryDateSuperD.'|MUSICINFERNO|13620||';
+					$this->_headerLine =   'H|'.$this->_entryDateSuperD.'|B|'.$this->_clientOrderIdentifier.'|||Music Inferno|5344 E. Greenmeadow Rd.||Long Beach|CA|90808|USA|Music Inferno|5344 E. Greenmeadow Rd.||Long Beach|CA|90808|USA|Will Call|2.99|david.delucca@gmail.com|';
+					$this->_data = $this->_accountLine."\r".$this->_headerLine."\r";
+					$this->_file2 = $this->_clientOrderIdentifier.'_'.$this->_trackingdate.'_'.$this->_titleTime.'.txt.done';		
+					$this->_writeFile1();
+					$this->_writeFile2();
 					
 					//call the complete set of the soap set
-					$this->__callSoap2();	
+					$this->_callSoap2();	
 					}
 							
 							
@@ -164,125 +164,125 @@ class GetOrderList implements Process {
 			
 			}
 			
-			private function __callSoap2(){
-				if($this->__orderNum<20){
-				$this->__pageSize = $this->__orderNum;
-				echo 'THIS IS ORDER NUMBER UNDER 20 : '.$this->__orderNum."\n";
+			private function _callSoap2(){
+				if($this->_orderNum<20){
+				$this->_pageSize = $this->_orderNum;
+				echo 'THIS IS ORDER NUMBER UNDER 20 : '.$this->_orderNum."\n";
 				} else {
-				$this->__pageSize = 20;
-				echo 'THIS IS ORDER NUMBER OVER 20: '.$this->__orderNum."\n";
+				$this->_pageSize = 20;
+				echo 'THIS IS ORDER NUMBER OVER 20: '.$this->_orderNum."\n";
 				}
 		
-				$this->__orderNum = number_format($this->__orderNum/20,2, '.', '');
-				$this->__orderNum = ceil($this->__orderNum);
-				$this->__orderNum = $this->__orderNum+1;
-				echo 'THIS IS ORDER NUMBER: '.$this->__orderNum."\n";
+				$this->_orderNum = number_format($this->_orderNum/20,2, '.', '');
+				$this->_orderNum = ceil($this->_orderNum);
+				$this->_orderNum = $this->_orderNum+1;
+				echo 'THIS IS ORDER NUMBER: '.$this->_orderNum."\n";
 				
-				for($i = 1;$i<$this->__orderNum;$i++){
+				for($i = 1;$i<$this->_orderNum;$i++){
 				$newpacket = '
 <web:GetOrderList>
-	<web:accountID>'.$this->__accountID.'</web:accountID>
+	<web:accountID>'.$this->_accountID.'</web:accountID>
 <web:orderCriteria>
 	<ord:StatusUpdateFilterBeginTimeGMT>2011-01-28T01:11:43</ord:StatusUpdateFilterBeginTimeGMT>
 	<ord:DetailLevel>High</ord:DetailLevel>
 	<ord:OrderStateFilter>Active</ord:OrderStateFilter>
 	<ord:ExportState>NotExported</ord:ExportState>
 	<ord:PageNumberFilter>'.$i.'</ord:PageNumberFilter>
-	<ord:PageSize>'.$this->__pageSize.'</ord:PageSize>
+	<ord:PageSize>'.$this->_pageSize.'</ord:PageSize>
 </web:orderCriteria>
 </web:GetOrderList>';
 
-				$this->__result = $this->__client->call('GetOrderList',$newpacket,false,false,$this->__headers);
+				$this->_result = $this->_client->call('GetOrderList',$newpacket,false,false,$this->_headers);
 				
-				if($this->__client->fault){
+				if($this->_client->fault){
 						echo 'Fault<pre>';
-						print_r($this->__result);
+						print_r($this->_result);
 						echo '</pre>';
 						} else {
-							$err = $this->__client->getError();
+							$err = $this->_client->getError();
 	
 								if($err){
 									echo 'Error: '.$err;
 								  } else {
 	
 										echo 'Result<pre>';
-										print_r($this->__result);
+										print_r($this->_result);
 										echo '</pre>';
 										
-										if($this->__matches == 1){
-										echo "THIS IS ONE THIS IS MATCHES: ".$this->__matches."\n";
-										$this->__oneOrder();
+										if($this->_matches == 1){
+										echo "THIS IS ONE THIS IS MATCHES: ".$this->_matches."\n";
+										$this->_oneOrder();
 										} else {
-										echo "THIS IS MORE: THIS IS MATCHES: ".$this->__matches." THIS IS TESTCOUNT: ".$this->__testCount."\n";
+										echo "THIS IS MORE: THIS IS MATCHES: ".$this->_matches." THIS IS TESTCOUNT: ".$this->_testCount."\n";
 										
 
-										if($this->__matches<$this->__testCount){
-										$this->__testCount = $this->__matches;
+										if($this->_matches<$this->_testCount){
+										$this->_testCount = $this->_matches;
 										}
-										$this->__moreOrder();
+										$this->_moreOrder();
 										}
 								  }
 						}
 				
 				//
 				}
-			$detailing = count($this->__detailMIDs);
+			$detailing = count($this->_detailMIDs);
 			$detailing = number_format($detailing);
 
 			if($detailing>0){
 				$Dliners = '';
 				for($r=0; $r<$detailing; $r++){
 				$d = $r+1;
-				$Dliners .= 'D|'.$d.'|'.$this->__detailMIDs[$r]."\r";
+				$Dliners .= 'D|'.$d.'|'.$this->_detailMIDs[$r]."\r";
 				}
-				$this->__data = $Dliners;
-			$this->__writeFile3();
+				$this->_data = $Dliners;
+			$this->_writeFile3();
 			}
 			
 			
-			$this->__destination();
+			$this->_destination();
 			
 				
 			}
 			
-			private function __oneOrder(){
-			$this->__detailIDs = array();
+			private function _oneOrder(){
+			$this->_detailIDs = array();
 			
-			$PurchaseOrder = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
-			array_push($this->__po,$PurchaseOrder);
+			$PurchaseOrder = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
+			array_push($this->_po,$PurchaseOrder);
 			
-			$CAOrderID = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['OrderID'];
-			$COI = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
-			$TotalOrderAmount = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['TotalOrderAmount'];
-			$OrderState = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['OrderState'];
-			$Email = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['BuyerEmailAddress'];
-			$EmailOptIn = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['EmailOptIn'];
+			$CAOrderID = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['OrderID'];
+			$COI = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ClientOrderIdentifier'];
+			$TotalOrderAmount = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['TotalOrderAmount'];
+			$OrderState = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['OrderState'];
+			$Email = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['BuyerEmailAddress'];
+			$EmailOptIn = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['EmailOptIn'];
 			
-			$ship = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShippingInfo']);
+			$ship = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShippingInfo']);
 			echo 'THIS IS SHIPPED: '.$ship."\n";
 			if($ship>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShippingInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShippingInfo'] as $key=>$val){
 					$shipping[$key]=$val;
 						}
 						}
 						
-			$pay = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['PaymentInfo']);
+			$pay = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['PaymentInfo']);
 			if($pay>0){			
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['PaymentInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['PaymentInfo'] as $key=>$val){
 					$payment[$key]=$val;
 						}
 						}
 			
-			$bill = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['BillingInfo']);
+			$bill = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['BillingInfo']);
 			if($bill>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['BillingInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['BillingInfo'] as $key=>$val){
 					$billing[$key]=$val;
 						}
 						}
 			
-			$ord = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
+			$ord = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
 			if($ord>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']as $key=>$val){
 					$order[$key]=$val;
 						}
 						}
@@ -294,7 +294,7 @@ class GetOrderList implements Process {
 			echo "Email this: ".$Email."\n";
 			
 			/*
-			**new Tracking No for __userArray
+			**new Tracking No for _userArray
 			*/
 			$pipe = '-';
     		$comma = '';
@@ -307,17 +307,17 @@ class GetOrderList implements Process {
     		$trackingNum = $shipTag.$zipCode;
 			//end
 			
-			$this->__userArray = array(
+			$this->_userArray = array(
 			'userEmail' => $Email,
-			'accountID' => $this->__account,
-			'poNumber' => $this->__clientOrderIdentifier.$dCounter,
+			'accountID' => $this->_account,
+			'poNumber' => $this->_clientOrderIdentifier.$dCounter,
 			'cartID' => $PurchaseOrder,
 			'trackingNo' => $trackingNum,
 			'fname' => $shipping['FirstName'],
 			'lname' => $shipping['LastName'],
-			'dateEntry' => $this->__entrydate,
-			'dateModified' => $this->__entrydate,
-			'timeModified' => $this->__modTime,
+			'dateEntry' => $this->_entrydate,
+			'dateModified' => $this->_entrydate,
+			'timeModified' => $this->_modTime,
 			'trackingNumber' => '',
 			'postDate' => '',
 			'transactionDateTime' => '',
@@ -351,15 +351,15 @@ class GetOrderList implements Process {
 			'CAOrderID' => $CAOrderID
 				);
 				
-				$this->newEntry($this->__userArray,$this->__userTable,'poNumber');
+				$this->newEntry($this->_userArray,$this->_userTable,'poNumber');
 				
-				$Detail = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
+				$Detail = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
 				$Detail = number_format($Detail);
 				
 				
 				
-				if(isset($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1])){
-				$array = array_values($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1]);
+				if(isset($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1])){
+				$array = array_values($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1]);
 				echo "here is the Array count: ".$array[4];
 				} 
 			
@@ -368,18 +368,18 @@ class GetOrderList implements Process {
 				
 								echo "if(array4 != 0 This is ARRAY 4: ".$array[4]."\n";
 					for($s=0;$s<$Detail;$s++){
-					foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][$s] as $key=>$val){
+					foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem']['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][$s] as $key=>$val){
 							$order[$s][$key]=$val;
 							}
 					$unitPrice = $order[$s]['UnitPrice'];
 					$unitPrice = number_format($unitPrice, 2, '.', '');	
-					$this->__purchaseArray = array(
+					$this->_purchaseArray = array(
 						'userID' => $Email,
-						'poNumber' =>$this->__clientOrderIdentifier.$dCounter,
+						'poNumber' =>$this->_clientOrderIdentifier.$dCounter,
 						'orderID' => $PurchaseOrder,
 						'clientOrderIndentifier' => $COI,
-						'orderDate' => $this->__entrydate,
-						'orderTime' => $this->__modTime,
+						'orderDate' => $this->_entrydate,
+						'orderTime' => $this->_modTime,
 						'totalOrderAmount' => $TotalOrderAmount,
 						'orderState' => $OrderState,
 						'paymentType' => $payment['PaymentType'],
@@ -396,21 +396,21 @@ class GetOrderList implements Process {
 						'trackingNo' => $PurchaseOrder,
 						'CAOrderID' => $CAOrderID
 					);
-					$this->newEntry($this->__purchaseArray,$this->__purchaseTable, 'poNumber');
-					$DlineMore = $this->__clientOrderIdentifier.$dCounter.'|'.$order[$s]['SKU'].'|'.$unitPrice.'|'.$order[$s]['Quantity'].'|';
-					array_push($this->__detailIDs,$DlineMore);
+					$this->newEntry($this->_purchaseArray,$this->_purchaseTable, 'poNumber');
+					$DlineMore = $this->_clientOrderIdentifier.$dCounter.'|'.$order[$s]['SKU'].'|'.$unitPrice.'|'.$order[$s]['Quantity'].'|';
+					array_push($this->_detailIDs,$DlineMore);
 				}
 				} else {
 								echo "This is ARRAY 4: ".$array[4]."\n";
 				$unitPrice = $order['UnitPrice'];
 				$unitPrice = number_format($unitPrice, 2, '.', '');
-				$this->__purchaseArray = array(
+				$this->_purchaseArray = array(
 						'userID' => $Email,
-						'poNumber' =>$this->__clientOrderIdentifier.$dCounter,
+						'poNumber' =>$this->_clientOrderIdentifier.$dCounter,
 						'orderID' => $PurchaseOrder,
 						'clientOrderIndentifier' => $COI,
-						'orderDate' => $this->__entrydate,
-						'orderTime' => $this->__modTime,
+						'orderDate' => $this->_entrydate,
+						'orderTime' => $this->_modTime,
 						'totalOrderAmount' => $TotalOrderAmount,
 						'orderState' => $OrderState,
 						'paymentType' => $payment['PaymentType'],
@@ -427,91 +427,91 @@ class GetOrderList implements Process {
 						'trackingNo' => $PurchaseOrder,
 						'CAOrderID' => $CAOrderID
 						);
-				$this->newEntry($this->__purchaseArray,$this->__purchaseTable,'poNumber');
-				$Dline = $this->__clientOrderIdentifier.$dCounter.'|'.$order['SKU'].'|'.$unitPrice.'|'.$order['Quantity'].'|';
+				$this->newEntry($this->_purchaseArray,$this->_purchaseTable,'poNumber');
+				$Dline = $this->_clientOrderIdentifier.$dCounter.'|'.$order['SKU'].'|'.$unitPrice.'|'.$order['Quantity'].'|';
 
-				array_push($this->__detailIDs,$Dline);
+				array_push($this->_detailIDs,$Dline);
 		
 
 				
 				}
 				//}
 				
-				$this->__string = '';
-				$count = count($this->__po);
+				$this->_string = '';
+				$count = count($this->_po);
 
 				for($e=0; $e<$count; $e++){
-				$this->__string .=	'<web:string>'.$this->__po[$e].'</web:string>';
+				$this->_string .=	'<web:string>'.$this->_po[$e].'</web:string>';
 				}
 		
-				$DlineCount = count($this->__detailIDs);
+				$DlineCount = count($this->_detailIDs);
 								echo "THIS IS DLINE count: ".$DlineCount."\n";
 				$Dliners = '';
 				for($r=0; $r<$DlineCount; $r++){
 				$d = $r+1;
 				echo "This is D: ".$d."\n";
 				
-				$Dliners .= 'D|'.$d.'|'.$this->__detailIDs[$r]."\r";
+				$Dliners .= 'D|'.$d.'|'.$this->_detailIDs[$r]."\r";
 				echo "THIS IS DLINERS ".$Dliners."\n";
 				}
-				$this->__data = $Dliners;
-				$this->__writeFile3();
+				$this->_data = $Dliners;
+				$this->_writeFile3();
 		
 		//STATUS SUBMIT
-					$this->__status();
+					$this->_status();
 		//STATUS END
 			
 			}
 			
-			private function __moreOrder(){
-			echo 'THIS IS C: '.$this->__c."\n";
+			private function _moreOrder(){
+			echo 'THIS IS C: '.$this->_c."\n";
 			
-			$this->__c = $this->__c + 1;
-				for($e=0; $e<$this->__testCount; $e++){
+			$this->_c = $this->_c + 1;
+				for($e=0; $e<$this->_testCount; $e++){
 				echo 'THIS IS E: '.$e."\n";
-				$PurchaseOrder = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ClientOrderIdentifier'];
+				$PurchaseOrder = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ClientOrderIdentifier'];
 				if(isset($PurchaseOrder)){
-				array_push($this->__po,$PurchaseOrder);
+				array_push($this->_po,$PurchaseOrder);
 				}
-				$CAOrderID = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['OrderID'];
-				$COI = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ClientOrderIdentifier'];
-				$TotalOrderAmount = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['TotalOrderAmount'];
-				$OrderState = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['OrderState'];
-				$Email = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BuyerEmailAddress'];
-				$EmailOptIn = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['EmailOptIn'];
+				$CAOrderID = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['OrderID'];
+				$COI = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ClientOrderIdentifier'];
+				$TotalOrderAmount = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['TotalOrderAmount'];
+				$OrderState = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['OrderState'];
+				$Email = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BuyerEmailAddress'];
+				$EmailOptIn = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['EmailOptIn'];
 				
-				$ship = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShippingInfo']);
+				$ship = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShippingInfo']);
 				if($ship>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShippingInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShippingInfo'] as $key=>$val){
 								$shipping[$key]=$val;
 								}
 								}
 								
-				$pay = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['PaymentInfo']);
+				$pay = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['PaymentInfo']);
 				if($pay>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['PaymentInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['PaymentInfo'] as $key=>$val){
 								$payment[$key]=$val;
 								}
 								}
 								
-				$bill = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BillingInfo']);
+				$bill = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BillingInfo']);
 				if($bill>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BillingInfo'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['BillingInfo'] as $key=>$val){
 								$billing[$key]=$val;
 								}
 								}
-				$ord = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
+				$ord = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
 				if($ord>0){
-				foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'] as $key=>$val){
+				foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'] as $key=>$val){
 								$order[$key]=$val;
 								}
 								}
 								
-				$CartID = $this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['CartID'];
+				$CartID = $this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['CartID'];
 	
 				if(isset($Email)){
 				
-				$dCount = count($this->__detailMIDs);
+				$dCount = count($this->_detailMIDs);
 				$dCount = number_format($dCount);
 				$dCounter = $dCount+1;
 				$dCounter = '-'.$dCounter;
@@ -519,7 +519,7 @@ class GetOrderList implements Process {
 				
 			
 			/*
-			**new Tracking No for __userArray
+			**new Tracking No for _userArray
 			*/
 			$pipe = '-';
     		$comma = '';
@@ -532,17 +532,17 @@ class GetOrderList implements Process {
     		$trackingNum = $shipTag.$zipCode;
 			//end
 				
-				$this->__userArray = array(
+				$this->_userArray = array(
 					'userEmail' => $Email,
-					'accountID' => $this->__account,
-					'poNumber' => $this->__clientOrderIdentifier.$dCounter,
+					'accountID' => $this->_account,
+					'poNumber' => $this->_clientOrderIdentifier.$dCounter,
 					'trackingNo' => $trackingNum,
 					'cartID' => $PurchaseOrder,
 					'fname' => $shipping['FirstName'],
 					'lname' => $shipping['LastName'],
-					'dateEntry' => $this->__entrydate,
-					'dateModified' => $this->__entrydate,
-					'timeModified' => $this->__modTime,
+					'dateEntry' => $this->_entrydate,
+					'dateModified' => $this->_entrydate,
+					'timeModified' => $this->_modTime,
 					'trackingNumber' => '',
 					'postDate' => '',
 					'transactionDateTime' => '',
@@ -576,23 +576,23 @@ class GetOrderList implements Process {
 					'CAOrderID' => $CAOrderID
 				);
 				
-				$this->newEntry($this->__userArray,$this->__userTable,'poNumber');
+				$this->newEntry($this->_userArray,$this->_userTable,'poNumber');
 				
-				$Detail = count($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
+				$Detail = count($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem']);
 				$Detail = number_format($Detail);
 				
-				if(isset($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1])){
-				$array = array_values($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1]);
+				if(isset($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1])){
+				$array = array_values($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][1]);
 				} else {
 				$array[4] = 0;
 				}				
 				if($array[4]!=0){
 					for($s=0;$s<$Detail;$s++){
 					
-					foreach($this->__result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][$s] as $key=>$val){
+					foreach($this->_result['GetOrderListResult']['ResultData']['OrderResponseItem'][$e]['ShoppingCart']['LineItemSKUList']['OrderLineItemItem'][$s] as $key=>$val){
 					$order[$s][$key]=$val;
 							}
-					$dCount = count($this->__detailMIDs);
+					$dCount = count($this->_detailMIDs);
 					$dCount = number_format($dCount);
 					$dCounter = $dCount+1;
 					$dCounter = '-'.$dCounter;
@@ -600,13 +600,13 @@ class GetOrderList implements Process {
 					$unitPrice = $order[$s]['UnitPrice'];
 					$unitPrice = number_format($unitPrice, 2, '.', '');
 					
-					$this->__purchaseArray = array(
+					$this->_purchaseArray = array(
 						'userID' => $Email,
-						'poNumber' =>$this->__clientOrderIdentifier.$dCounter,
+						'poNumber' =>$this->_clientOrderIdentifier.$dCounter,
 						'orderID' => $PurchaseOrder,
 						'clientOrderIndentifier' => $COI,
-						'orderDate' => $this->__entrydate,
-						'orderTime' => $this->__modTime,
+						'orderDate' => $this->_entrydate,
+						'orderTime' => $this->_modTime,
 						'totalOrderAmount' => $TotalOrderAmount,
 						'orderState' => $OrderState,
 						'paymentType' => $payment['PaymentType'],
@@ -624,10 +624,10 @@ class GetOrderList implements Process {
 						'CAOrderID' => $CAOrderID
 					);
 					
-					$this->newEntry($this->__purchaseArray,$this->__purchaseTable,'poNumber');
-					$this->__Dline = $this->__clientOrderIdentifier.$dCounter.'|'.$order[$s]['SKU'].'|'.$unitPrice.'|'.$order[$s]['Quantity'].'|';
+					$this->newEntry($this->_purchaseArray,$this->_purchaseTable,'poNumber');
+					$this->_Dline = $this->_clientOrderIdentifier.$dCounter.'|'.$order[$s]['SKU'].'|'.$unitPrice.'|'.$order[$s]['Quantity'].'|';
 					
-					array_push($this->__detailMIDs,$this->__Dline);
+					array_push($this->_detailMIDs,$this->_Dline);
 					//
 					}
 				//
@@ -636,18 +636,18 @@ class GetOrderList implements Process {
 					$unitPrice = $order['UnitPrice'];
 					$unitPrice = number_format($unitPrice, 2, '.', '');
 				
-					$dCount = count($this->__detailMIDs);
+					$dCount = count($this->_detailMIDs);
 					$dCount = number_format($dCount);
 					$dCounter = $dCount+1;
 					$dCounter = '-'.$dCounter;
 					
-					$this->__purchaseArray = array(
+					$this->_purchaseArray = array(
 						'userID' => $Email,
-						'poNumber' =>$this->__clientOrderIdentifier.$dCounter,
+						'poNumber' =>$this->_clientOrderIdentifier.$dCounter,
 						'orderID' => $PurchaseOrder,
 						'clientOrderIndentifier' => $COI,
-						'orderDate' => $this->__entrydate,
-						'orderTime' => $this->__modTime,
+						'orderDate' => $this->_entrydate,
+						'orderTime' => $this->_modTime,
 						'totalOrderAmount' => $TotalOrderAmount,
 						'orderState' => $OrderState,
 						'paymentType' => $payment['PaymentType'],
@@ -665,11 +665,11 @@ class GetOrderList implements Process {
 						'CAOrderID' => $CAOrderID
 						);
 					
-				$this->newEntry($this->__purchaseArray,$this->__purchaseTable,'poNumber');
-				$this->__Dline = $this->__clientOrderIdentifier.$dCounter.'|'.$order['SKU'].'|'.$unitPrice.'|'.$order['Quantity'].'|';
+				$this->newEntry($this->_purchaseArray,$this->_purchaseTable,'poNumber');
+				$this->_Dline = $this->_clientOrderIdentifier.$dCounter.'|'.$order['SKU'].'|'.$unitPrice.'|'.$order['Quantity'].'|';
 				
 					
-				array_push($this->__detailMIDs,$this->__Dline);
+				array_push($this->_detailMIDs,$this->_Dline);
 				//
 				}
 				//
@@ -677,38 +677,38 @@ class GetOrderList implements Process {
 				//
 				} 
 			
-				$this->__string = '';
-				$count = count($this->__po);
+				$this->_string = '';
+				$count = count($this->_po);
 				for($e=0; $e<$count; $e++){
-				$this->__string .=	'<web:string>'.$this->__po[$e].'</web:string>';
+				$this->_string .=	'<web:string>'.$this->_po[$e].'</web:string>';
 				}	
 			//STATUS SUBMIT
-			$this->__status();
+			$this->_status();
 			//STATUS END
 			}
 
-			private function __status(){
+			private function _status(){
 			
-			$countString = count($this->__string);
+			$countString = count($this->_string);
 			
-			$this->__stringArray .= $this->__stringArray+$countString;
+			$this->_stringArray .= $this->_stringArray+$countString;
 			
 			echo 'This is countString: '.$countString."\n";
 				$newpacket2 = '
 <web:SetOrdersExportStatus>
-	<web:accountID>'.$this->__accountID.'</web:accountID>
+	<web:accountID>'.$this->_accountID.'</web:accountID>
 <web:clientOrderIdentifiers>
-'.$this->__string.'
+'.$this->_string.'
 </web:clientOrderIdentifiers>
 	<web:markAsExported>true</web:markAsExported>
 </web:SetOrdersExportStatus>';
-			$result = $this->__client->call('SetOrdersExportStatus',$newpacket2,false,false,$this->__headers);
-			if($this->__client->fault){
+			$result = $this->_client->call('SetOrdersExportStatus',$newpacket2,false,false,$this->_headers);
+			if($this->_client->fault){
 					echo 'Fault<pre>';
 					print_r($result);
 					echo '</pre>';
 			} else {
-			$err = $this->__client->getError();
+			$err = $this->_client->getError();
 	
 			if($err){
 				echo 'Error: '.$err;
@@ -721,18 +721,18 @@ class GetOrderList implements Process {
 				}
 			}
 
-			private function __destination(){
+			private function _destination(){
 
-				$destination_file = 'Inbound/'.$this->__file;
-				$source_file = $this->__writeFile.$this->__file;
-				$destination_file2 = 'Inbound/'.$this->__file2;
-				$source_file2 = $this->__writeFile.$this->__file2;
+				$destination_file = 'Inbound/'.$this->_file;
+				$source_file = $this->_writeFile.$this->_file;
+				$destination_file2 = 'Inbound/'.$this->_file2;
+				$source_file2 = $this->_writeFile.$this->_file2;
 
 				try{
-				    $this->__ftp->connect($this->options['ftpSD']['host']);
-					$this->__ftp->login($this->options['ftpSD']['user'], $this->options['ftpSD']['pass']);
-					$this->__ftp->put($destination_file, $source_file, FTP_BINARY);
-					$this->__ftp->put($destination_file2, $source_file2, FTP_BINARY);
+				    $this->_ftp->connect($this->options['ftpSD']['host']);
+					$this->_ftp->login($this->options['ftpSD']['user'], $this->options['ftpSD']['pass']);
+					$this->_ftp->put($destination_file, $source_file, FTP_BINARY);
+					$this->_ftp->put($destination_file2, $source_file2, FTP_BINARY);
 					} catch (FtpException $e) {
     					echo 'Error: ', $e->getMessage();
 						}
@@ -747,47 +747,47 @@ class GetOrderList implements Process {
 				
 //LOG out					
 					
-					$Handle = fopen($this->__log, 'a+');
-					$this->__timeStamp = date("Y-m-d H:i:s");
-					$this->__data = $this->__timeStamp.": GetOrderList Finished.\n";
-					fwrite($Handle, $this->__data); 
+					$Handle = fopen($this->_log, 'a+');
+					$this->_timeStamp = date("Y-m-d H:i:s");
+					$this->_data = $this->_timeStamp.": GetOrderList Finished.\n";
+					fwrite($Handle, $this->_data); 
 					fclose($Handle);
 
 			}
 			
-			private function __writeFile1(){
-				$Handle = fopen($this->__writeFile.$this->__file, 'w');
-				fwrite($Handle, $this->__data); 
+			private function _writeFile1(){
+				$Handle = fopen($this->_writeFile.$this->_file, 'w');
+				fwrite($Handle, $this->_data); 
 				fclose($Handle);
-				$Handle = fopen($this->__log,'a+');
+				$Handle = fopen($this->_log,'a+');
 				fwrite($Handle, $this->_file);
 				fclose($Handle);
 			}
 			
 			
-			private function __writeFile3(){
-				$Handle = fopen($this->__writeFile.$this->__file, 'a+');
-				fwrite($Handle, $this->__data); 
+			private function _writeFile3(){
+				$Handle = fopen($this->_writeFile.$this->_file, 'a+');
+				fwrite($Handle, $this->_data); 
 				fclose($Handle);
 			}
 			
-			private function __writeFile2(){
-				$Handle = fopen($this->__writeFile.$this->__file2,'w');
+			private function _writeFile2(){
+				$Handle = fopen($this->_writeFile.$this->_file2,'w');
 				fclose($Handle);
 			}
 			
 			public function run(){
-				$this->__callSoap();
-				if($this->__stringArray == 0){
+				$this->_callSoap();
+				if($this->_stringArray == 0){
 								echo 'ALL DONE! NO ORDERS!';
 				
 				
 //LOG out					
 					
-					$Handle = fopen($this->__log, 'a+');
-					$this->__timeStamp = date("Y-m-d H:i:s");
-					$this->__data = $this->__timeStamp.": GetOrderList no orders Finished.\n";
-					fwrite($Handle, $this->__data); 
+					$Handle = fopen($this->_log, 'a+');
+					$this->_timeStamp = date("Y-m-d H:i:s");
+					$this->_data = $this->_timeStamp.": GetOrderList no orders Finished.\n";
+					fwrite($Handle, $this->_data); 
 					fclose($Handle);
 				}	
 			}

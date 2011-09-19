@@ -2,115 +2,115 @@
 
 class SubmitComparisonPrice implements Process {
 
-			private $__skuArray;
-			private $__productArray;
-			private $__productsArray;
-			private $__quantityArray;
-			private $__missingArray;
-			private $__albumUpdateArray;
-			private $__albumInstockArray;
-			private $__albumZeroArray;
-			private $__noTitleArray;
-			private $__albumsTable = "albums";
-			private $__channelTable = "channel2";
-			private $__productsTable = "products";
-			private $__skuCounter;
-			private $__noTitleCounter;
-			private $__productCounter;
-			private $__productsCounter;
-			private $__quantityCounter;
-			private $__missingCounter;
-			private $__albumUpdateCounter;
-			private $__albumInstockCounter;
-			private $__albumZeroCounter;
-			private $__writeFile;
-			private $__dir;
-			private $__log;
-			private $__timeStamp;
-			private $__data;
-			private $__sku;
-			private $__quantity;
-			private $__productID;
-			private $__price;
-			private $__cost;
-			private $__destination;
-			private $__filename;
-			private $__dest;
-			private $__printZeroCount;
-			private $__printInstockCount;
-			private $__printUpdateCount;
-			private $__state;
-			private $__titleArray;
-			private $__outHeader;
-			private $__instockHeader;
-			private $__updateHeader;
-			private $__outImploded;
-			private $__instockImploded;
-			private $__updateImploded;
-			private $__name;
-			private $__vType;
-			private $__vTitle;
-			private $__vArtist;
-			private $__vWeight;
-			private $__vCost;
-			private $__rTitle;
-			private $__rType;
-			private $__rPrice;
-			private $__rWeight;
-			private $__rate;
-			private $__sCost;
-			private $__sAmount;
-			private $__sWCMAmount;
-			private $__sWWMAmount;
-			private $__wcmPrice;
-			private $__wwmPrice;
-			private $__tabsOne;
-			private $__tabsTwo;
-			private $__tabsThree;
-			private $__tabsFour;
-			private $__pricing;
+			private $_skuArray;
+			private $_productArray;
+			private $_productsArray;
+			private $_quantityArray;
+			private $_missingArray;
+			private $_albumUpdateArray;
+			private $_albumInstockArray;
+			private $_albumZeroArray;
+			private $_noTitleArray;
+			private $_albumsTable = "albums";
+			private $_channelTable = "channel2";
+			private $_productsTable = "products";
+			private $_skuCounter;
+			private $_noTitleCounter;
+			private $_productCounter;
+			private $_productsCounter;
+			private $_quantityCounter;
+			private $_missingCounter;
+			private $_albumUpdateCounter;
+			private $_albumInstockCounter;
+			private $_albumZeroCounter;
+			private $_writeFile;
+			private $_dir;
+			private $_log;
+			private $_timeStamp;
+			private $_data;
+			private $_sku;
+			private $_quantity;
+			private $_productID;
+			private $_price;
+			private $_cost;
+			private $_destination;
+			private $_filename;
+			private $_dest;
+			private $_printZeroCount;
+			private $_printInstockCount;
+			private $_printUpdateCount;
+			private $_state;
+			private $_titleArray;
+			private $_outHeader;
+			private $_instockHeader;
+			private $_updateHeader;
+			private $_outImploded;
+			private $_instockImploded;
+			private $_updateImploded;
+			private $_name;
+			private $_vType;
+			private $_vTitle;
+			private $_vArtist;
+			private $_vWeight;
+			private $_vCost;
+			private $_rTitle;
+			private $_rType;
+			private $_rPrice;
+			private $_rWeight;
+			private $_rate;
+			private $_sCost;
+			private $_sAmount;
+			private $_sWCMAmount;
+			private $_sWWMAmount;
+			private $_wcmPrice;
+			private $_wwmPrice;
+			private $_tabsOne;
+			private $_tabsTwo;
+			private $_tabsThree;
+			private $_tabsFour;
+			private $_pricing;
 
 			
-	public function __construct(){
+	public function _construct(){
         $this->options = $_ENV['CONFIG'];
         $this->db = new Database($this->options['db']);
-        $this->__destination = $this->options['destination'];
-        $this->__skuArray = array();
-        $this->__productArray = array();
-        $this->__productsArray = array();
-        $this->__quantityArray = array();
-        $this->__missingArray = array();
-        $this->__albumUpdateArray = array();
-        $this->__albumInstockArray = array();
-        $this->__albumZeroArray = array();
-        $this->__noTitleArray = array();
-		$this->__outHeader = array();
-		$this->__instockHeader = array();
-		$this->__updateHeader = array();
-		$this->__pricing = array();
-		$this->__tabsOne = ' 	 	 	 	 	 	 	 	 ';
-		$this->__tabsTwo = ' 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 ';
-		$this->__tabsThree = ' ';
-		$this->__tabsFour = ' 	 	 	 	 	 	 ';
+        $this->_destination = $this->options['destination'];
+        $this->_skuArray = array();
+        $this->_productArray = array();
+        $this->_productsArray = array();
+        $this->_quantityArray = array();
+        $this->_missingArray = array();
+        $this->_albumUpdateArray = array();
+        $this->_albumInstockArray = array();
+        $this->_albumZeroArray = array();
+        $this->_noTitleArray = array();
+		$this->_outHeader = array();
+		$this->_instockHeader = array();
+		$this->_updateHeader = array();
+		$this->_pricing = array();
+		$this->_tabsOne = ' 	 	 	 	 	 	 	 	 ';
+		$this->_tabsTwo = ' 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 ';
+		$this->_tabsThree = ' ';
+		$this->_tabsFour = ' 	 	 	 	 	 	 ';
 		
-    	$this->__outImploded = implode("\t", $this->__destination['channeladvisor']['headers']['out']);
-    	echo $this->__outImploded;
-		$this->__instockImploded = implode("\t", $this->__destination['channeladvisor']['headers']['instock']);
-    	$this->__updateImploded = implode("\t", $this->__destination['channeladvisor']['headers']['updated']);
+    	$this->_outImploded = implode("\t", $this->_destination['channeladvisor']['headers']['out']);
+    	echo $this->_outImploded;
+		$this->_instockImploded = implode("\t", $this->_destination['channeladvisor']['headers']['instock']);
+    	$this->_updateImploded = implode("\t", $this->_destination['channeladvisor']['headers']['updated']);
 			
-        $this->__state = array('instock','update','out');
+        $this->_state = array('instock','update','out');
         
-        $this->__dir = "processes/";
-		$this->__log = $this->__dir.$this->options['log'];
-		$Handle = fopen($this->__log, 'a+');
-		$this->__timeStamp = date("Y-m-d H:i:s");
-		$this->__data = $this->__timeStamp.": SubmitComparison started.\n";
-		fwrite($Handle, $this->__data); 
+        $this->_dir = "processes/";
+		$this->_log = $this->_dir.$this->options['log'];
+		$Handle = fopen($this->_log, 'a+');
+		$this->_timeStamp = date("Y-m-d H:i:s");
+		$this->_data = $this->_timeStamp.": SubmitComparison started.\n";
+		fwrite($Handle, $this->_data); 
 		fclose($Handle);
         }
         
-    private function __getAll(){
-    	$channel = $this->db->get_all($this->__channelTable);
+    private function _getAll(){
+    	$channel = $this->db->get_all($this->_channelTable);
     	if($channel){           
    		 	while (list($key, $value) = each($channel)) {
    		 	$sku = $value['sku'];
@@ -119,77 +119,77 @@ class SubmitComparisonPrice implements Process {
    		 	$pushing = array($sku,$value['quantity'],$value['title']);
    		 	if($value['title'] == "NEW  -  ()"){
    		 	echo $sku."\n".$value['title']."\n THIS IS A NON TITLE";
-   		 	array_push($this->__noTitleArray,$pushing);
+   		 	array_push($this->_noTitleArray,$pushing);
    		 	}
-   		 	array_push($this->__skuArray,$pushing);
+   		 	array_push($this->_skuArray,$pushing);
 			}
-			$this->__skuCounter = count($this->__skuArray);
-			echo $this->__skuCounter."\n";
-			$this->__noTitleCounter = count($this->__noTitleArray);
-			echo "This is noTitle counter $this->__noTitleCounter\n";
+			$this->_skuCounter = count($this->_skuArray);
+			echo $this->_skuCounter."\n";
+			$this->_noTitleCounter = count($this->_noTitleArray);
+			echo "This is noTitle counter $this->_noTitleCounter\n";
 
    		 }
-   		 $this->__compare();
+   		 $this->_compare();
     }
     
-    private function __compare(){
-    	for($t = 0; $t<$this->__noTitleCounter; $t++){
-    		$item = $this->__noTitleArray[$t][0];
+    private function _compare(){
+    	for($t = 0; $t<$this->_noTitleCounter; $t++){
+    		$item = $this->_noTitleArray[$t][0];
     		$noTitle_list = $this->db->get("SELECT * FROM products WHERE product_id = '$item'");
     		if($noTitle_list){
     		$item = '';
     		while(list($key,$value) = each($noTitle_list)){
-    		$this->__productID = $value['product_id'];
-   		 	$this->__sku = $value['sku'];
-   		 	$this->__quantity = $value['quantity'];
-   		 	$this->__price = $value['price'];
-   		 	$this->__cost = $value['cost'];
-   		 	$push = array($this->__productID,$this->__quantity,$this->__price,$this->__cost,$this->__sku);
-   			array_push($this->__quantityArray,$push);
+    		$this->_productID = $value['product_id'];
+   		 	$this->_sku = $value['sku'];
+   		 	$this->_quantity = $value['quantity'];
+   		 	$this->_price = $value['price'];
+   		 	$this->_cost = $value['cost'];
+   		 	$push = array($this->_productID,$this->_quantity,$this->_price,$this->_cost,$this->_sku);
+   			array_push($this->_quantityArray,$push);
    		 	echo "PUSHED INTO QUANTITY ARRAY\n";
-   			$this->__sku = '';
+   			$this->_sku = '';
    		 	
     		}
     		}
     	}
-    	$c = count($this->__quantityArray);
+    	$c = count($this->_quantityArray);
     	echo "THIS IS THE QUANTITY ARRAY OF NO TITLES: $c\n\n\n";
     	sleep(1);
-    	for($e = 0; $e<$this->__skuCounter; $e++){
+    	for($e = 0; $e<$this->_skuCounter; $e++){
     	      
-    		$item = $this->__skuArray[$e][0];
-    		$zero = $this->__skuArray[$e][0];
+    		$item = $this->_skuArray[$e][0];
+    		$zero = $this->_skuArray[$e][0];
     		echo $item."\n";
-    		$quantity = $this->__skuArray[$e][1];
-    		$channelTitle = $this->__skuArray[$e][2];
-    		$table = $this->__productsTable;
+    		$quantity = $this->_skuArray[$e][1];
+    		$channelTitle = $this->_skuArray[$e][2];
+    		$table = $this->_productsTable;
     		$productID = 'productID';
     	$sku_list = $this->db->get("SELECT *  FROM products WHERE product_id = '$item'"); 
 		if($sku_list){ 
 		$item = '';
    		 	while (list($key, $value) = each($sku_list)) {  
    		 	
-   		 	$this->__productID = $value['product_id'];
-   		 	$this->__sku = $value['sku'];
-   		 	$this->__quantity = $value['quantity'];
-   		 	$this->__price = $value['price'];
-   		 	$this->__cost = $value['cost'];
+   		 	$this->_productID = $value['product_id'];
+   		 	$this->_sku = $value['sku'];
+   		 	$this->_quantity = $value['quantity'];
+   		 	$this->_price = $value['price'];
+   		 	$this->_cost = $value['cost'];
    		 	
-   		 	array_push($this->__productsArray,$this->__productID);
+   		 	array_push($this->_productsArray,$this->_productID);
    		 	
    		 	echo "PUSHED INTO PRODUCTS ARRAY\n";
 			}
-   		if($this->__skuArray[$e][1] != $this->__quantity){
-   			$push = array($this->__productID,$this->__quantity,$this->__price,$this->__cost,$this->__sku);
-   			array_push($this->__quantityArray,$push);
+   		if($this->_skuArray[$e][1] != $this->_quantity){
+   			$push = array($this->_productID,$this->_quantity,$this->_price,$this->_cost,$this->_sku);
+   			array_push($this->_quantityArray,$push);
    		 	echo "PUSHED INTO QUANTITY ARRAY\n";
-   			$this->__sku = '';
+   			$this->_sku = '';
    		}
-   		if($this->__skuArray[$e][1] == $this->__quantity){
-   			$push = array($this->__productID,$this->__quantity,$this->__price,$this->__cost,$this->__sku);
-   			array_push($this->__productArray,$push);
+   		if($this->_skuArray[$e][1] == $this->_quantity){
+   			$push = array($this->_productID,$this->_quantity,$this->_price,$this->_cost,$this->_sku);
+   			array_push($this->_productArray,$push);
    		 	echo "\nPUSHED INTO PRODUCT ARRAY\n\n";
-   			$this->__sku = '';   			
+   			$this->_sku = '';   			
    		}
    		}
    		if($item != ''){
@@ -198,32 +198,32 @@ class SubmitComparisonPrice implements Process {
  				$zero = substr("$item", 0, -1);
    			$zero = "$zero";
    			$pushing = array($zero,$channelTitle,$productID);
-   			array_push($this->__missingArray,$pushing);
+   			array_push($this->_missingArray,$pushing);
    		 	echo "PUSHED INTO MISSING ARRAY\n";
    		}
    		
     	}
     	
-    	$this->__productsCounter = count($this->__productsArray);
-    	$this->__quantityCounter = count($this->__quantityArray);
-    	$this->__productCounter = count($this->__productArray);
-    	$this->__missingCounter = count($this->__missingArray);
-    	echo "THIS IS ALL PRODUCTS THAT MATCH CHANNEL: ".$this->__productsCounter."\n";
-    	echo "THIS IS QUANTITIES THAT DON'T MATCH: ".$this->__quantityCounter."\n";
-    	echo "THIS IS QUANTITIES THAT DO MATCH: ".$this->__productCounter."\n";
-    	echo "THIS IS CHANNEL MISSING FROM PRODUCTS: ".$this->__missingCounter."\n";
+    	$this->_productsCounter = count($this->_productsArray);
+    	$this->_quantityCounter = count($this->_quantityArray);
+    	$this->_productCounter = count($this->_productArray);
+    	$this->_missingCounter = count($this->_missingArray);
+    	echo "THIS IS ALL PRODUCTS THAT MATCH CHANNEL: ".$this->_productsCounter."\n";
+    	echo "THIS IS QUANTITIES THAT DON'T MATCH: ".$this->_quantityCounter."\n";
+    	echo "THIS IS QUANTITIES THAT DO MATCH: ".$this->_productCounter."\n";
+    	echo "THIS IS CHANNEL MISSING FROM PRODUCTS: ".$this->_missingCounter."\n";
 
-    	$this->__writeOut();
+    	$this->_writeOut();
     
     }
     
-    private function __writeOut(){
-    	for($k=0; $k<$this->__quantityCounter; $k++){
-    			$sku = $this->__quantityArray[$k][4];
-    			$quantity = $this->__quantityArray[$k][1];
-    			$cost = $this->__quantityArray[$k][3];
-    			$price = $this->__quantityArray[$k][2];
-    			$productID = $this->__quantityArray[$k][0];
+    private function _writeOut(){
+    	for($k=0; $k<$this->_quantityCounter; $k++){
+    			$sku = $this->_quantityArray[$k][4];
+    			$quantity = $this->_quantityArray[$k][1];
+    			$cost = $this->_quantityArray[$k][3];
+    			$price = $this->_quantityArray[$k][2];
+    			$productID = $this->_quantityArray[$k][0];
     			echo "THIS IS SEARCH SKU: ".$sku."\n";
     			$album_list = $this->db->get("SELECT *  FROM albums WHERE sku = '$sku'");
     			
@@ -232,49 +232,49 @@ class SubmitComparisonPrice implements Process {
    		 	while (list($key, $value) = each($album_list)) {
    		 	
    		 	
-   		 	$this->__vType = $value['cfgltr'];
-			$this->__vTitle = $value['title'];
-			$this->__vArtist = $value['artist'];
-			$this->__vWeight = $value['weight'];
-			$this->__vCost = $cost;
-			$this->__rType = $this->__format_channeladvisor_item_type();
-			$this->__rTitle = sprintf("NEW %s (%s)", $this->__format_channeladvisor_item_title(), $this->__rType);
+   		 	$this->_vType = $value['cfgltr'];
+			$this->_vTitle = $value['title'];
+			$this->_vArtist = $value['artist'];
+			$this->_vWeight = $value['weight'];
+			$this->_vCost = $cost;
+			$this->_rType = $this->_format_channeladvisor_item_type();
+			$this->_rTitle = sprintf("NEW %s (%s)", $this->_format_channeladvisor_item_title(), $this->_rType);
 			
-			$this->__format_item_price();
-			$this->__rPrice = $this->__pricing[0][0];
-			$this->__wcmPrice = $this->__pricing[0][1];
-			$this->__wwmPrice = $this->__pricing[0][2];
-			unset($this->__pricing);
+			$this->_format_item_price();
+			$this->_rPrice = $this->_pricing[0][0];
+			$this->_wcmPrice = $this->_pricing[0][1];
+			$this->_wwmPrice = $this->_pricing[0][2];
+			unset($this->_pricing);
 			
 			
-			$pushing = array($this->__rTitle,$productID,"UNSHIPPED",$quantity,$this->__rPrice,$this->__tabsOne,$this->__vCost,$this->__rPrice,$this->__tabsTwo,$this->__wcmPrice,$this->__tabsThree,$this->__wwmPrice,$this->__tabsFour);
+			$pushing = array($this->_rTitle,$productID,"UNSHIPPED",$quantity,$this->_rPrice,$this->_tabsOne,$this->_vCost,$this->_rPrice,$this->_tabsTwo,$this->_wcmPrice,$this->_tabsThree,$this->_wwmPrice,$this->_tabsFour);
 			
-   		 	array_push($this->__albumUpdateArray,$pushing);
-   		 	$this->__vType = '';
-			$this->__vTitle = '';
-			$this->__vArtist = '';
-			$this->__vWeight = '';
-			$this->__vCost = '';
-			$this->__rType = '';
-			$this->__rTitle = '';
-			$this->__rPrice = '';
-			$this->__wcmPrice = '';
-			$this->__wwmPrice = '';
+   		 	array_push($this->_albumUpdateArray,$pushing);
+   		 	$this->_vType = '';
+			$this->_vTitle = '';
+			$this->_vArtist = '';
+			$this->_vWeight = '';
+			$this->_vCost = '';
+			$this->_rType = '';
+			$this->_rTitle = '';
+			$this->_rPrice = '';
+			$this->_wcmPrice = '';
+			$this->_wwmPrice = '';
     			}
     	}
     			
     			
     	}
-    	$this->__albumUpdateCounter = count($this->__albumUpdateArray);
-    	echo 'THIS IS ALBUM COUNTER: '.$this->__albumUpdateCounter."\n";
+    	$this->_albumUpdateCounter = count($this->_albumUpdateArray);
+    	echo 'THIS IS ALBUM COUNTER: '.$this->_albumUpdateCounter."\n";
     	
-    	unset($this->__quantityArray);
-    	for($k=0; $k<$this->__productCounter; $k++){
-    			$sku = $this->__productArray[$k][4];
-    			$quantity = $this->__productArray[$k][1];
-    			$cost = $this->__productArray[$k][3];
-    			$price = $this->__productArray[$k][2];
-    			$productID = $this->__productArray[$k][0];
+    	unset($this->_quantityArray);
+    	for($k=0; $k<$this->_productCounter; $k++){
+    			$sku = $this->_productArray[$k][4];
+    			$quantity = $this->_productArray[$k][1];
+    			$cost = $this->_productArray[$k][3];
+    			$price = $this->_productArray[$k][2];
+    			$productID = $this->_productArray[$k][0];
     			echo "THIS IS SEARCH SKU: ".$sku."\n";
     			$album_list = $this->db->get("SELECT *  FROM albums WHERE sku = '$sku'");
     			
@@ -284,88 +284,88 @@ class SubmitComparisonPrice implements Process {
    		 	if($quantity == 0){
    		 	
    		 	
-   		 	$this->__vType = $value['cfgltr'];
-			$this->__vTitle = $value['title'];
-			$this->__vArtist = $value['artist'];
-			$this->__vWeight = $value['weight'];
-			$this->__vCost = $cost;
-			$this->__rType = $this->__format_channeladvisor_item_type();
-			$this->__rTitle = sprintf("NEW %s (%s)", $this->__format_channeladvisor_item_title(), $this->__rType);
-			echo $this->__rTitle;
+   		 	$this->_vType = $value['cfgltr'];
+			$this->_vTitle = $value['title'];
+			$this->_vArtist = $value['artist'];
+			$this->_vWeight = $value['weight'];
+			$this->_vCost = $cost;
+			$this->_rType = $this->_format_channeladvisor_item_type();
+			$this->_rTitle = sprintf("NEW %s (%s)", $this->_format_channeladvisor_item_title(), $this->_rType);
+			echo $this->_rTitle;
 			
-			$this->__format_item_price();
-			$this->__rPrice = $this->__pricing[0][0];
-			$this->__wcmPrice = $this->__pricing[0][1];
-			$this->__wwmPrice = $this->__pricing[0][2];
-			unset($this->__pricing);
+			$this->_format_item_price();
+			$this->_rPrice = $this->_pricing[0][0];
+			$this->_wcmPrice = $this->_pricing[0][1];
+			$this->_wwmPrice = $this->_pricing[0][2];
+			unset($this->_pricing);
 			
-			$pushingZero = array($this->__rTitle,$productID,"UNSHIPPED",$quantity,$this->__rPrice,$this->__tabsOne,$this->__vCost,$this->__rPrice,$this->__tabsTwo,$this->__wcmPrice,$this->__tabsThree,$this->__wwmPrice,$this->__tabsFour);
+			$pushingZero = array($this->_rTitle,$productID,"UNSHIPPED",$quantity,$this->_rPrice,$this->_tabsOne,$this->_vCost,$this->_rPrice,$this->_tabsTwo,$this->_wcmPrice,$this->_tabsThree,$this->_wwmPrice,$this->_tabsFour);
 
 			
-   		 	array_push($this->__albumZeroArray,$pushingZero);
+   		 	array_push($this->_albumZeroArray,$pushingZero);
    		 	
-   		 	$this->__vType = '';
-			$this->__vTitle = '';
-			$this->__vArtist = '';
-			$this->__vWeight = '';
-			$this->__vCost = '';
-			$this->__rType = '';
-			$this->__rTitle = '';
-			$this->__rPrice = '';
-			$this->__wcmPrice = '';
-			$this->__wwmPrice = '';
+   		 	$this->_vType = '';
+			$this->_vTitle = '';
+			$this->_vArtist = '';
+			$this->_vWeight = '';
+			$this->_vCost = '';
+			$this->_rType = '';
+			$this->_rTitle = '';
+			$this->_rPrice = '';
+			$this->_wcmPrice = '';
+			$this->_wwmPrice = '';
    		 	}else{
    		 	
    		 	
-   		 	$this->__vType = $value['cfgltr'];
-			$this->__vTitle = $value['title'];
-			$this->__vArtist = $value['artist'];
-			$this->__vWeight = $value['weight'];
-			$this->__vCost = $cost;
-			$this->__rType = $this->__format_channeladvisor_item_type();
-			$this->__rTitle = sprintf("NEW %s (%s)", $this->__format_channeladvisor_item_title(), $this->__rType);
-			echo $this->__rTitle;
+   		 	$this->_vType = $value['cfgltr'];
+			$this->_vTitle = $value['title'];
+			$this->_vArtist = $value['artist'];
+			$this->_vWeight = $value['weight'];
+			$this->_vCost = $cost;
+			$this->_rType = $this->_format_channeladvisor_item_type();
+			$this->_rTitle = sprintf("NEW %s (%s)", $this->_format_channeladvisor_item_title(), $this->_rType);
+			echo $this->_rTitle;
 			
-			$this->__format_item_price();
-			$this->__rPrice = $this->__pricing[0][0];
-			$this->__wcmPrice = $this->__pricing[0][1];
-			$this->__wwmPrice = $this->__pricing[0][2];
-			unset($this->__pricing);
+			$this->_format_item_price();
+			$this->_rPrice = $this->_pricing[0][0];
+			$this->_wcmPrice = $this->_pricing[0][1];
+			$this->_wwmPrice = $this->_pricing[0][2];
+			unset($this->_pricing);
 			
-			$pushing = array($this->__rTitle,$productID,"UNSHIPPED",$quantity,$this->__rPrice,$this->__tabsOne,$this->__vCost,$this->__rPrice,$this->__tabsTwo,$this->__wcmPrice,$this->__tabsThree,$this->__wwmPrice,$this->__tabsFour);
+			$pushing = array($this->_rTitle,$productID,"UNSHIPPED",$quantity,$this->_rPrice,$this->_tabsOne,$this->_vCost,$this->_rPrice,$this->_tabsTwo,$this->_wcmPrice,$this->_tabsThree,$this->_wwmPrice,$this->_tabsFour);
 
 			
-   		 	array_push($this->__albumInstockArray,$pushing);
+   		 	array_push($this->_albumInstockArray,$pushing);
    		 	
-   		 	$this->__vType = '';
-			$this->__vTitle = '';
-			$this->__vArtist = '';
-			$this->__vWeight = '';
-			$this->__vCost = '';
-			$this->__rType = '';
-			$this->__rTitle = '';
-			$this->__rPrice = '';
-			$this->__wcmPrice = '';
-			$this->__wwmPrice = '';
+   		 	$this->_vType = '';
+			$this->_vTitle = '';
+			$this->_vArtist = '';
+			$this->_vWeight = '';
+			$this->_vCost = '';
+			$this->_rType = '';
+			$this->_rTitle = '';
+			$this->_rPrice = '';
+			$this->_wcmPrice = '';
+			$this->_wwmPrice = '';
    		 	}
     			}
     	}
     			
     			
     	}
-    	$this->__albumInstockCounter = count($this->__albumInstockArray);
-    	echo 'THIS IS INSTOCK ALBUM COUNTER: '.$this->__albumInstockCounter."\n";
-    	$this->__albumZeroCounter = count($this->__albumZeroArray);
-    	echo 'THIS IS ZERO ALBUM COUNTER: '.$this->__albumZeroCounter."\n";
-		unset($this->__productArray);
+    	$this->_albumInstockCounter = count($this->_albumInstockArray);
+    	echo 'THIS IS INSTOCK ALBUM COUNTER: '.$this->_albumInstockCounter."\n";
+    	$this->_albumZeroCounter = count($this->_albumZeroArray);
+    	echo 'THIS IS ZERO ALBUM COUNTER: '.$this->_albumZeroCounter."\n";
+		unset($this->_productArray);
 		
-    	for($k=0; $k<$this->__missingCounter; $k++){
+    	for($k=0; $k<$this->_missingCounter; $k++){
     	echo "\n";
-    	print_r($this->__missingArray[$k]);
+    	print_r($this->_missingArray[$k]);
     	echo "\n\n";
-    			$sku = $this->__missingArray[$k][0];
-    			$title = $this->__missingArray[$k][1];
-    			$productID = $this->__missingArray[$k][2];
+    			$sku = $this->_missingArray[$k][0];
+    			$title = $this->_missingArray[$k][1];
+    			$productID = $this->_missingArray[$k][2];
     			echo "THIS IS ZERO SEARCH SKU: $sku \n";
     			$album_list = $this->db->get("SELECT *  FROM albums WHERE sku = '$sku'");
     			
@@ -380,91 +380,91 @@ class SubmitComparisonPrice implements Process {
    		 	if($quantity == 0){
    		 	
    		 	
-   		 	$this->__vType = $value['cfgltr'];
-			$this->__vTitle = $value['title'];
-			$this->__vArtist = $value['artist'];
-			$this->__vWeight = $value['weight'];
-			$this->__vCost = $cost;
-			$this->__rType = $this->__format_channeladvisor_item_type();
-			$this->__rTitle = sprintf("NEW %s (%s)", $this->__format_channeladvisor_item_title(), $this->__rType);
-			echo $this->__rTitle;
-			$this->__format_item_price();
-			$this->__rPrice = $this->__pricing[0][0];
-			$this->__wcmPrice = $this->__pricing[0][1];
-			$this->__wwmPrice = $this->__pricing[0][2];
-			unset($this->__pricing);
+   		 	$this->_vType = $value['cfgltr'];
+			$this->_vTitle = $value['title'];
+			$this->_vArtist = $value['artist'];
+			$this->_vWeight = $value['weight'];
+			$this->_vCost = $cost;
+			$this->_rType = $this->_format_channeladvisor_item_type();
+			$this->_rTitle = sprintf("NEW %s (%s)", $this->_format_channeladvisor_item_title(), $this->_rType);
+			echo $this->_rTitle;
+			$this->_format_item_price();
+			$this->_rPrice = $this->_pricing[0][0];
+			$this->_wcmPrice = $this->_pricing[0][1];
+			$this->_wwmPrice = $this->_pricing[0][2];
+			unset($this->_pricing);
 			
-			$pushingZero = array($this->__rTitle,$productID,"UNSHIPPED",$quantity,$this->__rPrice,$this->__tabsOne,$this->__vCost,$this->__rPrice,$this->__tabsTwo,$this->__wcmPrice,$this->__tabsThree,$this->__wwmPrice,$this->__tabsFour);
+			$pushingZero = array($this->_rTitle,$productID,"UNSHIPPED",$quantity,$this->_rPrice,$this->_tabsOne,$this->_vCost,$this->_rPrice,$this->_tabsTwo,$this->_wcmPrice,$this->_tabsThree,$this->_wwmPrice,$this->_tabsFour);
 
-   		 	array_push($this->__albumZeroArray,$pushingZero);
+   		 	array_push($this->_albumZeroArray,$pushingZero);
    		 	
-   		 	$this->__vType = '';
-			$this->__vTitle = '';
-			$this->__vArtist = '';
-			$this->__vWeight = '';
-			$this->__vCost = '';
-			$this->__rType = '';
-			$this->__rTitle = '';
-			$this->__rPrice = '';
-			$this->__wcmPrice = '';
-			$this->__wwmPrice = '';
+   		 	$this->_vType = '';
+			$this->_vTitle = '';
+			$this->_vArtist = '';
+			$this->_vWeight = '';
+			$this->_vCost = '';
+			$this->_rType = '';
+			$this->_rTitle = '';
+			$this->_rPrice = '';
+			$this->_wcmPrice = '';
+			$this->_wwmPrice = '';
    		 	}else{
 
    		 	
-   		 	$this->__vType = $value['cfgltr'];
-			$this->__vTitle = $value['title'];
-			$this->__vArtist = $value['artist'];
-			$this->__vWeight = $value['weight'];
-			$this->__vCost = $cost;
-			$this->__rType = $this->__format_channeladvisor_item_type();
-			$this->__rTitle = sprintf("NEW %s (%s)", $this->__format_channeladvisor_item_title(), $this->__rType);
-			echo $this->__rTitle;
+   		 	$this->_vType = $value['cfgltr'];
+			$this->_vTitle = $value['title'];
+			$this->_vArtist = $value['artist'];
+			$this->_vWeight = $value['weight'];
+			$this->_vCost = $cost;
+			$this->_rType = $this->_format_channeladvisor_item_type();
+			$this->_rTitle = sprintf("NEW %s (%s)", $this->_format_channeladvisor_item_title(), $this->_rType);
+			echo $this->_rTitle;
 			
-			$this->__format_item_price();
-			$this->__rPrice = $this->__pricing[0][0];
-			$this->__wcmPrice = $this->__pricing[0][1];
-			$this->__wwmPrice = $this->__pricing[0][2];
-			unset($this->__pricing);
+			$this->_format_item_price();
+			$this->_rPrice = $this->_pricing[0][0];
+			$this->_wcmPrice = $this->_pricing[0][1];
+			$this->_wwmPrice = $this->_pricing[0][2];
+			unset($this->_pricing);
 			
 			
-			$pushing = array($this->__rTitle,$productID,"UNSHIPPED",$quantity,$this->__rPrice,$this->__tabsOne,$this->__vCost,$this->__rPrice,$this->__tabsTwo,$this->__wcmPrice,$this->__tabsThree,$this->__wwmPrice,$this->__tabsFour);
+			$pushing = array($this->_rTitle,$productID,"UNSHIPPED",$quantity,$this->_rPrice,$this->_tabsOne,$this->_vCost,$this->_rPrice,$this->_tabsTwo,$this->_wcmPrice,$this->_tabsThree,$this->_wwmPrice,$this->_tabsFour);
 
 			
-   		 	array_push($this->__albumInstockArray,$pushing);
+   		 	array_push($this->_albumInstockArray,$pushing);
    		 	
-   		 	$this->__vType = '';
-			$this->__vTitle = '';
-			$this->__vArtist = '';
-			$this->__vWeight = '';
-			$this->__vCost = '';
-			$this->__rType = '';
-			$this->__rTitle = '';
-			$this->__rPrice = '';
-			$this->__wcmPrice = '';
-			$this->__wwmPrice = '';
+   		 	$this->_vType = '';
+			$this->_vTitle = '';
+			$this->_vArtist = '';
+			$this->_vWeight = '';
+			$this->_vCost = '';
+			$this->_rType = '';
+			$this->_rTitle = '';
+			$this->_rPrice = '';
+			$this->_wcmPrice = '';
+			$this->_wwmPrice = '';
    		 	}
     			}
     	}
     			
     			
     	}
-    	$this->__albumInstockCounter = count($this->__albumInstockArray);
-    	echo 'THIS IS ALBUM COUNTER: '.$this->__albumInstockCounter."\n";
-    	$this->__albumZeroCounter = count($this->__albumZeroArray);
-    	echo 'THIS IS ALBUM COUNTER: '.$this->__albumZeroCounter."\n";
+    	$this->_albumInstockCounter = count($this->_albumInstockArray);
+    	echo 'THIS IS ALBUM COUNTER: '.$this->_albumInstockCounter."\n";
+    	$this->_albumZeroCounter = count($this->_albumZeroArray);
+    	echo 'THIS IS ALBUM COUNTER: '.$this->_albumZeroCounter."\n";
 		
-		unset($this->__missingArray);
+		unset($this->_missingArray);
 
     }
     /*
     ** begin from importStock.php
     */
-    private function __format_channeladvisor_item_title(){
-        $artist = ucwords(strtolower($this->__vArtist));
-        $title = ucwords(strtolower($this->__vTitle));
+    private function _format_channeladvisor_item_title(){
+        $artist = ucwords(strtolower($this->_vArtist));
+        $title = ucwords(strtolower($this->_vTitle));
         
         // Show only title on DVDs.
-        if($this->__format_channeladvisor_item_type() == 'DVD')
+        if($this->_format_channeladvisor_item_type() == 'DVD')
             return $title;
         
         if(strpos($artist, ',') !== FALSE){
@@ -475,8 +475,8 @@ class SubmitComparisonPrice implements Process {
         return sprintf("%s - %s", $artist, $title);
     }
     
-    private function __format_channeladvisor_item_type(){
-        switch(strtoupper($this->__vType)){
+    private function _format_channeladvisor_item_type(){
+        switch(strtoupper($this->_vType)){
             case 'G':
             case 'H':
             	return 'DVD';
@@ -501,84 +501,84 @@ class SubmitComparisonPrice implements Process {
         }
     }
     
-    private function __format_item_WCM(){
+    private function _format_item_WCM(){
     
-    switch($this->__dest){
+    switch($this->_dest){
     	case 'channeladvisor':
-    		//$this->__sCost = $this->__format_item_shipping_cost();
-    		$this->__sAmount = number_format(((1.10 * $this->__vCost) + .80 - 2.98 + $this->__sCost) / .85, 2);
+    		//$this->_sCost = $this->_format_item_shipping_cost();
+    		$this->_sAmount = number_format(((1.10 * $this->_vCost) + .80 - 2.98 + $this->_sCost) / .85, 2);
     		break;
     	}
     	
-    	return $this->__sAmount;
+    	return $this->_sAmount;
     }
     
-    private function __format_item_WWM(){
-    	switch($this->__dest){
+    private function _format_item_WWM(){
+    	switch($this->_dest){
     		case 'channeladvisor':          
-    		$this->__sAmount =  number_format((((1.10* $this->__vCost)-2.99 +.99+1.77)/.85), 2);
+    		$this->_sAmount =  number_format((((1.10* $this->_vCost)-2.99 +.99+1.77)/.85), 2);
     		break;
     		} 
     		
-     		return $this->__sAmount;
+     		return $this->_sAmount;
      }
      
      
-     private function __format_item_weight(){
+     private function _format_item_weight(){
 		
-        if(!$this->__vWeight){
+        if(!$this->_vWeight){
         echo "no weight";
         }
-        $this->__vWeight = ceil($this->__vWeight)? $this->__vWeight : 4;
+        $this->_vWeight = ceil($this->_vWeight)? $this->_vWeight : 4;
         
         
-        return $this->__vWeight;
+        return $this->_vWeight;
     }
     
-    private function __format_item_shipping_cost(){
+    private function _format_item_shipping_cost(){
         $rates = $this->options['shipping_rates'];
-        $this->__rWeight = $this->__format_item_weight();
-        if(array_key_exists($this->__rWeight, $rates)){
-            $rate = $rates[$this->__rWeight];
+        $this->_rWeight = $this->_format_item_weight();
+        if(array_key_exists($this->_rWeight, $rates)){
+            $rate = $rates[$this->_rWeight];
         } else {
             $rate = array_shift($rates);
         }
-        $this->__rate = number_format($rate + $this->options['shipping_fee'], 2);
+        $this->_rate = number_format($rate + $this->options['shipping_fee'], 2);
         
-        return $this->__rate;
+        return $this->_rate;
     }
     
-    private function __format_item_price(){
+    private function _format_item_price(){
         	
-        $this->__pricing = array();
+        $this->_pricing = array();
         
-        switch($this->__dest){
+        switch($this->_dest){
         case 'channeladvisor':
         		
-        		$this->__sCost = $this->__format_item_shipping_cost();
+        		$this->_sCost = $this->_format_item_shipping_cost();
         		
                 /**
                 *ebay pricing changed to white crow media 01082011
                 *
-                $this->__sAmount = number_format((1.00 * 1.1 - (2.99 - $this->__sCost - $this->__vCost - 0.05 - 0.30 - (0.029 * 2.99))) / ((1 - 0.15 * .80) - 0.029), 2);
+                $this->_sAmount = number_format((1.00 * 1.1 - (2.99 - $this->_sCost - $this->_vCost - 0.05 - 0.30 - (0.029 * 2.99))) / ((1 - 0.15 * .80) - 0.029), 2);
                 */
                 
-                $this->__sAmount = number_format(((1.10 * $this->__vCost) + .80 - 2.98 + $this->__sCost) / .85, 2);
+                $this->_sAmount = number_format(((1.10 * $this->_vCost) + .80 - 2.98 + $this->_sCost) / .85, 2);
                 
-                $this->__sWCMAmount = number_format(((1.10 * $this->__vCost) + .80 - 2.98 + $this->__sCost) / .85, 2);
+                $this->_sWCMAmount = number_format(((1.10 * $this->_vCost) + .80 - 2.98 + $this->_sCost) / .85, 2);
                	
-               	$this->__sWWMAmount =  number_format((((1.10* $this->__vCost)-2.99 +.99+ $this->__sCost)/.85), 2);
+               	$this->_sWWMAmount =  number_format((((1.10* $this->_vCost)-2.99 +.99+ $this->_sCost)/.85), 2);
                	
-               	$pushing = array($this->__sAmount,$this->__sWCMAmount,$this->__sWWMAmount);
+               	$pushing = array($this->_sAmount,$this->_sWCMAmount,$this->_sWWMAmount);
                	
-               	array_push($this->__pricing,$pushing);
+               	array_push($this->_pricing,$pushing);
                	
                 break;
                 }
-                $this->__sCost = '';
-                $this->__sAmount = '';
-                $this->__sWCMAmount = '';
-                $this->__sWWMAmount = '';
+                $this->_sCost = '';
+                $this->_sAmount = '';
+                $this->_sWCMAmount = '';
+                $this->_sWWMAmount = '';
 
                 }
     /*
@@ -590,57 +590,57 @@ class SubmitComparisonPrice implements Process {
     **begin writing file
     */
     
-    private function __generate_output_filename($count){
+    private function _generate_output_filename($count){
     
-    $this->__titleArray = array();
+    $this->_titleArray = array();
     echo $name." ".$count."\n";
     for($e=0;$e<$count;$e++){
     	$parts = array(
-            $this->__destination['channeladvisor']['output_prefix'], 
-            $this->__dest, 
-            $this->__name, 
+            $this->_destination['channeladvisor']['output_prefix'], 
+            $this->_dest, 
+            $this->_name, 
             $e, 
             date('Y-m-d-h-i-s'));
         
         $namer = sprintf("%s.txt",implode('_', array_filter($parts, 'strlen')));
          echo $namer."\n";   
-        array_push($this->__titleArray,$namer);
+        array_push($this->_titleArray,$namer);
         
             }
     }
     
-    private function __open_output_file($state){
+    private function _open_output_file($state){
     		switch($state){
     		case 'update':
-    		$count = $this->__printUpdateCount;
-    		$array = $this->__albumUpdateArray;
-    		$headers = $this->__updateImploded;
-    		$this->__name = 'updated';
+    		$count = $this->_printUpdateCount;
+    		$array = $this->_albumUpdateArray;
+    		$headers = $this->_updateImploded;
+    		$this->_name = 'updated';
     		break;
     		case 'out':
-    		$count = $this->__printZeroCount;
-    		$array = $this->__albumZeroArray;
-    		$headers = $this->__outImploded;
-    		$this->__name = 'out';
+    		$count = $this->_printZeroCount;
+    		$array = $this->_albumZeroArray;
+    		$headers = $this->_outImploded;
+    		$this->_name = 'out';
     		break;
     		case 'instock':
-    		$count = $this->__printInstockCount;
-    		$array = $this->__albumInstockArray;
-    		$headers = $this->__instockImploded;
-    		$this->__name = 'updated';
+    		$count = $this->_printInstockCount;
+    		$array = $this->_albumInstockArray;
+    		$headers = $this->_instockImploded;
+    		$this->_name = 'updated';
     		break;
     		}
     		
     	    $countArray = count($array);
-			$this->__generate_output_filename($count);
-			for($f=0;$f<count($this->__titleArray);$f++){
-    	    $handle = fopen(WORKING_DIR . $this->options['tmpdir'] . $this->__titleArray[$f], 'w+');
+			$this->_generate_output_filename($count);
+			for($f=0;$f<count($this->_titleArray);$f++){
+    	    $handle = fopen(WORKING_DIR . $this->options['tmpdir'] . $this->_titleArray[$f], 'w+');
         	fwrite($handle, $headers. "\n");
         	fclose($handle);
         	}
         	for($k=0;$k<$count;$k++){
         	
-    	    $handle = fopen(WORKING_DIR . $this->options['tmpdir'] . $this->__titleArray[$k], 'a+');
+    	    $handle = fopen(WORKING_DIR . $this->options['tmpdir'] . $this->_titleArray[$k], 'a+');
     	    
     	    if($countArray>10000){
     	    $arrayCount = 10000;
@@ -663,44 +663,44 @@ class SubmitComparisonPrice implements Process {
     	    
         	}
         	fclose($handle);
-        	unset($this->__titleArray);
+        	unset($this->_titleArray);
         	
     }
     
 	
-	private function __export(){
+	private function _export(){
 	
 	
-		echo "this is Zero Counter: $this->__albumZeroCounter\n";
-		echo "this is Update Counter: $this->__albumUpdateCounter\n";
-		echo "this is Instock Counter: $this->__albumInstockCounter\n";
+		echo "this is Zero Counter: $this->_albumZeroCounter\n";
+		echo "this is Update Counter: $this->_albumUpdateCounter\n";
+		echo "this is Instock Counter: $this->_albumInstockCounter\n";
         $file_lines = $updated_lines = 0;
 //        exit();
 
         
-        $this->__printInstockCount = number_format($this->__albumInstockCounter/10000);
-        $this->__printInstockCount = ceil($this->__printInstockCount)+1;
-		echo "this is print instock counter: $this->__printInstockCount\n";
-        $this->__open_output_file("instock");
+        $this->_printInstockCount = number_format($this->_albumInstockCounter/10000);
+        $this->_printInstockCount = ceil($this->_printInstockCount)+1;
+		echo "this is print instock counter: $this->_printInstockCount\n";
+        $this->_open_output_file("instock");
 
-        $this->__printUpdateCount = number_format($this->__albumUpdateCounter/10000);
-        $this->__printUpdateCount = ceil($this->__printUpdateCount)+1;
-		echo "this is print update counter: $this->__printUpdateCount\n";
-        $this->__open_output_file("update");
+        $this->_printUpdateCount = number_format($this->_albumUpdateCounter/10000);
+        $this->_printUpdateCount = ceil($this->_printUpdateCount)+1;
+		echo "this is print update counter: $this->_printUpdateCount\n";
+        $this->_open_output_file("update");
         
         
-        $this->__printZeroCount = number_format($this->__albumZeroCounter/10000);
-        $this->__printZeroCount = ceil($this->__printZeroCount)+1;
-		echo "this is this is print zero counter: $this->__printZeroCount\n";
-        $this->__open_output_file("out");
+        $this->_printZeroCount = number_format($this->_albumZeroCounter/10000);
+        $this->_printZeroCount = ceil($this->_printZeroCount)+1;
+		echo "this is this is print zero counter: $this->_printZeroCount\n";
+        $this->_open_output_file("out");
 
 		
         
         
-        $Handle = fopen($this->__log, 'a+');
-		$this->__timeStamp = date("Y-m-d H:i:s");
-		$this->__data = $this->__timeStamp.": SubmitComparison FINISHED.\n";
-		fwrite($Handle, $this->__data); 
+        $Handle = fopen($this->_log, 'a+');
+		$this->_timeStamp = date("Y-m-d H:i:s");
+		$this->_data = $this->_timeStamp.": SubmitComparison FINISHED.\n";
+		fwrite($Handle, $this->_data); 
 		fclose($Handle);
         exit();
 		
@@ -709,12 +709,12 @@ class SubmitComparisonPrice implements Process {
     public function run(){
    
     
-		$this->__dest = $this->__destination['channeladvisor']['dest'];
-        print "\nExporting items for $this->__dest.\n";
+		$this->_dest = $this->_destination['channeladvisor']['dest'];
+        print "\nExporting items for $this->_dest.\n";
 
-    	$this->__getAll();
+    	$this->_getAll();
     	
-    	$this->__export();
+    	$this->_export();
     }
 
 }
